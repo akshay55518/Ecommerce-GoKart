@@ -1,0 +1,34 @@
+# Python compiled files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+env/
+
+# Django database (use external DB in production)
+db.sqlite3
+
+# Logs
+*.log
+
+# Django static and media (use cloud storage in production)
+staticfiles/
+media/
+
+# Environment variables
+.env
+.env.*
+
+# IDE / editor files
+.vscode/
+.idea/
+
+# Bytecode, caches, coverage reports
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/

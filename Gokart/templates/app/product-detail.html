@@ -1,0 +1,68 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block title %}ProductDetail{% endblock title %}
+
+
+{% block main-content %}
+
+<div class="container my-5 p-3">
+
+    <div class="card p-5">
+        <div class="row">
+            <aside class="col-md-6">
+                <div class="gallery-wrap">
+                    <div class="img-big-wrap">
+                        <a href="#"><img src="{{product.product_image.url}}" class="object-fit-contain " width="400" height="400"></a>
+                    </div>
+                </div>
+            </aside>
+            <main class="col-md-6 border-left">
+                <div class="content-body">
+                    <div class="d-flex justify-content-between ">
+                        <h2 class="title">{{product.title}}</h2>
+                        <a href="" class="text-decoration-none ">
+                            <span class="material-symbols-outlined">
+                                favorite
+                            </span></a>
+                    </div>
+
+                    <div class="mb-3 d-flex justify-content-between" >
+                        <small class="h6 text-decoration-line-through text-danger ">
+                            <span class="material-symbols-outlined">
+                                currency_rupee
+                            </span>{{product.selling_price}}</small>
+                        <p class="h4"><span class="material-symbols-outlined">currency_rupee</span>
+                            {{product.discount_price}}</p>
+                    </div>
+
+                    <!-- Product details -->
+                    <h5>Product Description:</h5>
+                    <ul>
+                        <li>{{product.description}}</li>
+                    </ul>
+                    <h5>Product Detail:</h5>
+                    <ul>
+                        <li>{{product.composition}}</li>
+                    </ul>
+                    <br>
+                    <!-- button -->
+                    <div class="d-flex justify-content-between ">
+                        <form action="/add-to-cart" method="">
+                        <input type="hidden" name="prod_id" value="{{product.id}}">
+                        <button class="btn btn-primary">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            <span class="text">Add to cart</span>
+                        </button>
+                        </form>
+                        <a href="{% url 'show-cart' %}" class="btn btn-dark">
+                            <span class="material-symbols-outlined">shopping_bag</span>
+                            <span class="text">Buy Now</span>
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+
+{% endblock main-content %}

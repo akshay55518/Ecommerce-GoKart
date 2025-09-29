@@ -1,0 +1,12 @@
+body{
+    background-color: #F6F7EB;
+}
+.dark-mode {
+    background-color: rgba(0, 0, 0, 0.808);
+    /* color: white; */
+    transition: all ease-in 1s;
+  }
+
+.dark-mode a{
+    color: black;
+}

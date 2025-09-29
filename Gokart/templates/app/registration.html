@@ -1,0 +1,45 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block title %}Registration{% endblock title %}
+
+{% block main-content %}
+
+<!-- <link rel="stylesheet" href="static 'app/css/registration.css' "> -->
+
+<div class="container pt-1 ">
+  <div class="row my-3 ">
+    <div class="col-sm-6 offset-sm-3">
+      <div class="card shadow p-5">
+        <h3 class="text-center pb-3  ">Registration</h3>
+        <form action="" method="post" novalidate>
+          {% csrf_token %}
+          {% for i in form %} {{i.label_tag}} {{i}}
+          <small class="text-danger ">{{i.errors|striptags}}</small>
+          {% endfor %}
+          <br>
+          <div class="d-flex justify-content-center pb-3  ">
+            <input type="submit" value="Register" class="btn btn-primary">
+          </div>
+          <div class="text-center text-primary fw-bold ">
+            <small>Existing User? <a href="{% url 'login' %}" class="text-danger text-decoration-none gap-5">Login</a></small>
+          </div>
+
+          {% if forms.non_field_errors %}
+            {% for error in form.non_field_errors %}
+              <p class="text-danger mt-2">{{error | striptags }}</p>
+            {% endfor %}
+          {% endif %}
+
+          {% if messages %}
+          {% for msg in messages %}
+          <div class="alert alert-{{msg.tags}}" role="alert">{{msg}}</div>
+          {% endfor %}
+          {% endif %}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock main-content%}

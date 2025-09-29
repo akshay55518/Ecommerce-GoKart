@@ -1,0 +1,88 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock title %}
+
+
+{% block banner-slider %}
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        {% for banner in banner %}
+        <div class="carousel-item active">
+            <img src="{{banner.banner_image.url}}" class="d-block mx-auto" width="1000" height="250" alt="{{banner.title}}">
+        </div>
+        {% endfor%}
+    </div>
+</div>
+<br>
+{% endblock banner-slider %}
+
+{% block information %}
+<!-- <div class="container-fluid  ">
+    <div class="row bg-success text-center p-5 text-white border-bottom shadow">
+        <h1>Products</h1>
+        <small class="fs-5 ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit id optio soluta 
+            facere numquam consequuntur veniam voluptates saepe quidem quae mollitia labore illo nulla ab odio 
+            quos, officiis accusantium molestias?</small>
+    </div>
+</div> -->
+{% endblock information %}
+
+
+{% block main-content %}
+<link rel="stylesheet" href="{% static 'app/css/home.css'%}">
+
+<div class="container container1 card p-3  ">
+    
+    <h3>View Items</h3>
+    <div class="row gap-3 d-flex justify-content-center ">
+        {% for product in product %}
+    <div class="card shadow mt-2 card1" style="width: 18rem;">
+        <a href="{% url 'product-detail' product.id %}" class="text-decoration-none text-bg-dark ">
+            <img src="{{product.product_image.url}}" class="card-img-top" alt="{{product.title}}" width="auto" height="250px">
+            <div class="card-body">
+              <h5 class="card-title">{{product.title}}</h5>
+              <div>
+                <small class="text-decoration-line-through ">Price:{{product.selling_price}}</small>
+                <p class="card-text">Discount Price:{{product.discount_price}}</p>
+              </div>
+        
+              <div class="d-flex justify-content-around ">
+                <a href="" class="btn">
+                    <span class="material-symbols-outlined">
+                    favorite
+                    </span></a>
+                    <a href="{% url 'add-to-cart' %}" class="btn btn-primary">
+                        <span class="material-symbols-outlined">
+                        shopping_cart
+                        </span>Add to cart</a>
+              </div>
+            </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>   
+</div>
+<br>
+
+<div class="container container1 card gap-3 p-3  ">
+<h3>Categories</h3>
+<div class="row d-flex justify-content-center gap-3 ">
+    {% for category in category %}
+    <!-- <p>{{category.id}}</p> -->
+    <div class="col-md-4 col-sm-4 mt-4  fadeInUp w-25 shadow" >
+        <div class="card object-fit-fill">
+            <a href="{% url 'category' category.id %}" class="text-decoration-none">
+                <div class="text-center">
+                    <img class="card-img " src="{{category.category_image.url}}" alt="{{category.title}}" width="50" height="100">
+                    <h4 class="card-footer ">{{category.title}}</h4>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+    
+</div>
+
+
+{% endblock main-content %}

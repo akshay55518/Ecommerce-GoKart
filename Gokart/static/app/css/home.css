@@ -1,0 +1,15 @@
+.container1{
+    border: 1px solid rgba(194, 187, 187, 0.425);
+    object-fit: contain;
+    padding-bottom: 20px;
+}
+.card1{
+    cursor: pointer;
+}
+/* .text1{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+} */

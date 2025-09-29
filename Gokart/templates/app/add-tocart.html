@@ -1,0 +1,78 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Cart{% endblock title %}
+
+{% block main-content %}
+
+<div class="container">
+    <div class="row p-3 ">
+        {% if cart %}
+        <h1 class="text-center mb-3 ">Your Shopping Cart</h1>
+        <div class="col-sm-8 ">
+            <div class="card p-3">
+                <div class="card-body">
+                    <h3 class="text-center fw-bold ">Orders</h3>
+                    <hr>
+                    {% for item in cart %}
+                    <div class="row">
+                        <div class="col-sm-3 "><img src="{{item.product.product_image.url}}" alt="{{item.product.title}}" class="img-fluid" height="150" width="150"></div>
+                        <div class="col-sm-9 ">
+                            <div>
+                                <h5>{{item.product.title}}</h5>
+                                <p>{{item.product.description}}</p>
+                                <div class="my-3 d-flex justify-content-between ">
+                                    <div>
+                                        <label for="quantity" class="form-label">Quantity: </label>
+                                        <a class="minus-cart btn" pid="{{item.product.id}}"><i class="fas fa-minus-square fa-lg"></i></a>
+                                        <span id="quantity">{{item.quantity}}</span>
+                                        <a class="plus-cart btn" pid="{{item.product.id}}"><i class="fas fa-plus-square fa-lg"></i></a>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0"><strong>Rs{{item.product.discount_price}}</strong></p>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between ">
+                                    <a class="remove-cart btn btn-sm btn-danger mr-3" pid="{{item.product.id}}" ><span class="material-symbols-outlined">
+                                        delete
+                                        </span>Remove item</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="text-muted ">
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+<div class="col-sm-4 ">
+    <div class="card">
+        <div class="card-body">
+            <h3>The total amount</h3>
+            <ul class="list-group ">
+                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0  ">Amount: <span id="amount">Rs{{amount}}</span></li>
+                <li class="list-group-item d-flex justify-content-between align-items-center p-2 border-1  ">Shipping:<span>100</span></li>
+                <small class="text-center text-danger">For orders above Rs. 1000 no shipping charge</small>
+                <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                    <div>
+                        <strong>Total</strong><small>(including GST)</small>
+                    </div>
+                    <span id="totalamount">
+                        <strong>
+                        <span class="material-symbols-outlined">
+                        currency_rupee
+                        </span>{{totalamount}}
+                    </strong></span>
+                </li>
+            </ul>
+            <div class="d-flex justify-content-center "><a href="{% url 'checkout' %}" class="btn btn-primary w-50 ">Place order</a></div>
+        </div>
+    </div>
+</div>
+{% else%}
+<h1 class="text-center mb-5 ">Empty Cart</h1>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock main-content %}
