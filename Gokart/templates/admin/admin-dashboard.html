@@ -197,6 +197,15 @@
                             <label for="brand_logo" class="form-label fw-semibold">Brand Logo:</label>
                             <input type="file" class="form-control form-control-lg" id="brand_logo" name="brand_logo">
                         </div>
+                        <div class="col-12 col-md-8">
+                            <label for="brand_categories" class="form-label fw-semibold">Select Categories:</label>
+                            <select id="brand_categories" name="categories" class="form-control form-control-lg" multiple>
+                                {% for cat in category %}
+                                <option value="{{ cat.id }}">{{ cat.title }}</option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple categories.</small>
+                        </div>
                         <div class="col-12 col-md-8 text-center mt-3">
                             <input type="submit" value="Add Brand" class="btn btn-warning btn-lg shadow-sm">
                         </div>
@@ -219,6 +228,11 @@
                                 {% endif %}
                                 <div class="card-body p-2 text-center">
                                     <h6 class="card-title text-truncate">{{ b.brand_name }}</h6>
+                                    {% if b.categories.all %}
+                                    <small class="text-muted d-block">
+                                        Categories: {{ b.categories.all|join:", " }}
+                                    </small>
+                                    {% endif %}
                                 </div>
                                 <div class="card-footer d-flex justify-content-center p-2">
                                     <form action="{% url 'delete_brand' b.id %}" method="post" class="w-100">

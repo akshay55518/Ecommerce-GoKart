@@ -18,21 +18,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.core.paginator import Paginator
 
-
-# user autentication
-# class CustomerRegistrationView(View):
-#     def get(self,request):
-#         form=CustomerRegistrationForm()
-#         return render(request,'auth/signin.html',locals())
-#     def post(self,request):
-#         form=CustomerRegistrationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request,"Contragulation! User registered successfull")
-#         else:
-#             messages.warning(request,"Error in Registration")
-#         return render(request,'auth/signin.html',locals())
-
 def customerRegistration(request):
     form = CustomerRegistrationForm()
     if request.method == "POST":
@@ -535,34 +520,38 @@ from datetime import timedelta, date
 from django.utils import timezone
 from datetime import timedelta
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-from datetime import timedelta
-from .models import User, Banner, Category, Brand, Product, OrderPlaced
-
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import Banner, Category, Brand, Product, User, OrderPlaced
-
 @login_required
 def admin_dashboard(request):
-    # Handle POST requests for adding items
     if request.method == "POST":
+        # ----------------- Banner -----------------
         if 'banner_image' in request.FILES:
             title = request.POST.get('title')
             image = request.FILES['banner_image']
             Banner.objects.create(title=title, banner_image=image)
+
+        # ----------------- Category -----------------
         elif 'category_image' in request.FILES or 'category_title' in request.POST:
             cat_id = request.POST.get('id')
             title = request.POST.get('title')
             image = request.FILES.get('category_image')
             Category.objects.create(id=cat_id, title=title, category_image=image)
+
+        # ----------------- Brand -----------------
         elif 'brand_logo' in request.FILES or 'brand_name' in request.POST:
             brand_id = request.POST.get('id')
             name = request.POST.get('brand_name')
             logo = request.FILES.get('brand_logo')
-            Brand.objects.create(id=brand_id, brand_name=name, brand_logo=logo)
+            category_ids = request.POST.getlist('categories')  # multiple category IDs
+
+            # Create the brand
+            brand = Brand.objects.create(id=brand_id, brand_name=name, brand_logo=logo)
+
+            # Assign categories
+            if category_ids:
+                categories = Category.objects.filter(id__in=category_ids)
+                brand.categories.set(categories)
+
+        # ----------------- Product -----------------
         elif 'product_image' in request.FILES or 'product_title' in request.POST:
             title = request.POST.get('title')
             selling_price = request.POST.get('selling_price')
@@ -590,13 +579,13 @@ def admin_dashboard(request):
 
         return redirect('admin_dashboard')
 
-    # Dashboard stats
+    # ----------------- Dashboard Stats -----------------
     total_users = User.objects.count()
-    new_users = User.objects.filter(date_joined__gte='2025-01-01').count()  # Adjust date as needed
+    new_users = User.objects.filter(date_joined__gte='2025-01-01').count()  # Adjust date
     total_products = Product.objects.count()
     total_orders = OrderPlaced.objects.count()
 
-    # Fetch data to display
+    # ----------------- Fetch Data -----------------
     banner = Banner.objects.all()
     category = Category.objects.all()
     brand = Brand.objects.all()

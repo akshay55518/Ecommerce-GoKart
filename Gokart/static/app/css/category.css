@@ -1,0 +1,39 @@
+/* Category Page Mobile Styles */
+@media (max-width: 767px) {
+    /* Card adjustments */
+    .card {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .card-body h5 {
+        font-size: 1rem; /* smaller title */
+    }
+
+    .card-body p,
+    .card-body small {
+        font-size: 0.9rem;
+    }
+
+    /* Make images fit the card on mobile */
+    .card-img-top {
+        height: 200px !important;
+        object-fit: cover;
+    }
+
+    /* Wishlist icon larger and clickable */
+    .card-footer a span.material-symbols-outlined {
+        font-size: 28px;
+    }
+
+    /* Center category title on mobile */
+    h3.text-center {
+        font-size: 1.5rem;
+    }
+}
+
+/* Optional: hover effects for mobile-friendly touch */
+.card:hover {
+    transform: none; /* disable translateY on touch devices */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}

@@ -51,3 +51,54 @@
         text-align: center;
     }
 }
+
+/* Mobile-friendly Registered Users Table */
+@media (max-width: 767px) {
+    /* Make the container have some padding */
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    /* Table scrollable on mobile */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    /* Reduce font size for better fit */
+    table.table td, table.table th {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.25rem;
+    }
+
+    /* Shorten column widths for small screens */
+    table.table th:nth-child(1),
+    table.table td:nth-child(1) {
+        width: 5%;
+    }
+    table.table th:nth-child(6),
+    table.table td:nth-child(6) {
+        width: 8%;
+    }
+
+    /* Reduce header size */
+    h1.display-5 {
+        font-size: 1.5rem;
+    }
+
+    /* Make delete button slightly smaller */
+    .btn-sm {
+        padding: 0.25rem 0.4rem;
+        font-size: 0.75rem;
+    }
+
+    /* Links inside table fit smaller screens */
+    a.text-decoration-none {
+        font-size: 0.85rem;
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

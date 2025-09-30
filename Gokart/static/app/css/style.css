@@ -1,21 +1,25 @@
-/* Base Background */
 body {
     background-color: #F6F7EB;
+    color: #000;
+    transition: all 0.4s;
 }
 
-/* Dark Mode Base */
-.dark-mode {
-    background-color: rgba(0, 0, 0, 0.808);
-    transition: all ease-in 1s;
+body.dark-mode {
+    background-color: #121212;
+    color: #f5f5f5;
 }
 
-.dark-mode a {
-    color: black;
+body.dark-mode a,
+body.dark-mode .nav-link,
+body.dark-mode .dropdown-item {
+    color: #f5f5f5 !important;
 }
 
-/* ✅ Navbar Green Gradient */
+/* =======================
+   Navbar
+======================= */
 .navbar-fun {
-    background: linear-gradient(90deg, #09814A, #7DD181); /* green shades */
+    background: linear-gradient(90deg, #09814A, #7DD181);
     color: white;
 }
 
@@ -29,13 +33,31 @@ body {
     color: #d0f0d0 !important;
 }
 
-/* ✅ Footer Gradient */
+/* Navbar icons hover effect */
+.nav-link span.material-symbols-outlined {
+    transition: transform 0.3s, color 0.3s;
+}
+
+.nav-link:hover span.material-symbols-outlined {
+    transform: rotate(20deg) scale(1.2);
+    color: #ffd700;
+}
+
+/* Navbar dark mode */
+body.dark-mode .navbar-fun {
+    background: linear-gradient(90deg, #2e7d32, #1b5e20);
+}
+
 .footer-fun {
     background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
     color: white;
 }
 
-/* Buttons */
+body.dark-mode footer {
+    background-color: #1f1f1f !important;
+    color: #f5f5f5 !important;
+}
+
 .btn-fun {
     background: #06BA63;
     color: white;
@@ -47,55 +69,11 @@ body {
 
 .btn-fun:hover {
     transform: scale(1.1);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-/* Product Cards */
-.product-card {
-    border-radius: 15px;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.product-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* Navbar Icons Hover */
-.nav-link span.material-symbols-outlined {
-    transition: transform 0.3s, color 0.3s;
-}
-
-.nav-link:hover span.material-symbols-outlined {
-    transform: rotate(20deg) scale(1.2);
-    color: #ffd700;
-}
-
-/* ✅ Dark Mode */
-body.dark-mode {
-    background: #121212;
-    color: #f5f5f5;
-}
-
-body.dark-mode .navbar-fun {
-    background: linear-gradient(90deg, #2e7d32, #1b5e20); /* darker green */
-    color: #f5f5f5;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 body.dark-mode .btn-fun {
     background: #81c784;
-}
-
-body.dark-mode .card,
-body.dark-mode .navbar,
-body.dark-mode footer {
-    background-color: #1f1f1f !important;
-    color: #f5f5f5 !important;
-}
-
-body.dark-mode .nav-link,
-body.dark-mode .dropdown-item {
-    color: #f5f5f5 !important;
 }
 
 body.dark-mode .btn-primary {
@@ -103,7 +81,23 @@ body.dark-mode .btn-primary {
     border-color: #4caf50;
 }
 
-/* ✅ Dark mode toggle switch */
+.product-card,
+.card {
+    border-radius: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover,
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .card {
+    background-color: #1f1f1f !important;
+}
+
+
 .checkbox-wrapper-17 {
     position: relative;
     width: 50px;
@@ -144,4 +138,31 @@ body.dark-mode .btn-primary {
 
 .checkbox-wrapper-17 input:checked + label::after {
     transform: translateX(25px);
+}
+
+.navbar .dropdown-menu {
+    position: absolute !important;
+    top: 100%;
+    left: 0;
+    display: none;
+    margin: 0;
+    padding: 0.5rem 0;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 1050;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.navbar .nav-item.dropdown:hover > .dropdown-menu {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.navbar .dropdown-menu .dropdown-item {
+    padding: 0.5rem 1.5rem;
+    white-space: nowrap;
 }

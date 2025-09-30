@@ -17,9 +17,11 @@ class Category(models.Model):
         return self.title
     
 class Brand(models.Model):
-    id=models.CharField(primary_key=True,max_length=10)
-    brand_name=models.CharField(max_length=50)
-    brand_logo=models.ImageField(upload_to='product/brand')
+    id = models.CharField(primary_key=True, max_length=10)
+    brand_name = models.CharField(max_length=50)
+    brand_logo = models.ImageField(upload_to='product/brand')
+    categories = models.ManyToManyField(Category, related_name='brands', blank=True)
+
     def __str__(self):
         return self.brand_name
     
