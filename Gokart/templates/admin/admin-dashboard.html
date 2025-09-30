@@ -2,9 +2,338 @@
 {% load static %}
 {% block title %}Admin Dashboard{% endblock title %}
 
-
 {% block main-content %}
+<div class="container-fluid py-4">
 
-<h1>admin dashboard</h1>
+    <h1 class="text-center mb-4">{{ request.user.username|capfirst }} Dashboard</h1>
+
+    <div class="row">
+        <!-- Left Sidebar: Admin Actions -->
+        <div class="col-md-2 mb-4">
+            <div class="d-grid gap-3">
+                <button class="btn btn-secondary btn-lg shadow-sm text-white" onclick="showSection('dashboard-overview')">
+                    Home
+                </button>
+                <button class="btn btn-success btn-lg shadow-sm text-white" onclick="showSection('banner-section')">
+                    Add Banner
+                </button>
+                <button class="btn btn-info btn-lg shadow-sm text-white" onclick="showSection('category-section')">
+                    Add Category
+                </button>
+                <button class="btn btn-warning btn-lg shadow-sm text-white" onclick="showSection('brand-section')">
+                    Add Brand
+                </button>
+                <button class="btn btn-primary btn-lg shadow-sm text-white" onclick="showSection('product-section')">
+                    Add Product
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Section: Content -->
+        <div class="col-md-10">
+
+            <!-- Dashboard Overview -->
+            <div id="dashboard-overview">
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-white bg-success mb-3 shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Total Users</h5>
+                                <p class="card-text display-6">{{ total_users }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-info mb-3 shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">New Users (7d)</h5>
+                                <p class="card-text display-6">{{ new_users }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-warning mb-3 shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Total Products</h5>
+                                <p class="card-text display-6">{{ total_products }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-primary mb-3 shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Total Orders</h5>
+                                <p class="card-text display-6">{{ total_orders }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banner Section -->
+            <div id="banner-section" class="d-none">
+                <div class="card shadow-sm mb-4 p-4 bg-white rounded-4">
+                    <h2 class="text-center fw-bold mb-4">Add Banner</h2>
+                    <form method="post" enctype="multipart/form-data" class="row g-3 justify-content-center">
+                        {% csrf_token %}
+                        <div class="col-12 col-md-8">
+                            <label for="title" class="form-label fw-semibold">Title:</label>
+                            <input type="text" class="form-control form-control-lg" id="title" name="title"
+                                placeholder="Enter banner title">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="banner_image" class="form-label fw-semibold">Banner Image:</label>
+                            <input type="file" class="form-control form-control-lg" id="banner_image"
+                                name="banner_image">
+                        </div>
+                        <div class="col-12 col-md-8 text-center mt-3">
+                            <input type="submit" value="Add Banner" class="btn btn-success btn-lg shadow-sm">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Existing Banners -->
+                <div class="card shadow-sm p-3 bg-white rounded-4">
+                    <h3 class="text-center mb-3 fw-bold">Existing Banners</h3>
+                    <div class="row g-3 justify-content-start">
+                        {% for i in banner %}
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <div class="card shadow-sm h-100">
+                                {% if i.banner_image %}
+                                <img src="{{ i.banner_image.url }}" class="card-img-top object-fit-cover"
+                                    alt="{{ i.title }}" style="height: 150px;">
+                                {% else %}
+                                <img src="{% static 'images/default-banner.jpg' %}"
+                                    class="card-img-top object-fit-cover" alt="Default Banner" style="height: 150px;">
+                                {% endif %}
+                                <div class="card-body p-2 text-center">
+                                    <h6 class="card-title text-truncate">{{ i.title }}</h6>
+                                </div>
+                                <div class="card-footer d-flex justify-content-center p-2">
+                                    <form action="{% url 'delete_banner' i.id %}" method="post" class="w-100">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm w-100">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-center text-muted">No banners added yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Section -->
+            <div id="category-section" class="d-none">
+                <div class="card shadow-sm mb-4 p-4 bg-white rounded-4">
+                    <h2 class="text-center fw-bold mb-4">Add Category</h2>
+                    <form method="post" enctype="multipart/form-data" class="row g-3 justify-content-center">
+                        {% csrf_token %}
+                        <div class="col-12 col-md-8">
+                            <label for="category_id" class="form-label fw-semibold">ID:</label>
+                            <input type="text" class="form-control form-control-lg" id="category_id" name="id">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="category_title" class="form-label fw-semibold">Title:</label>
+                            <input type="text" class="form-control form-control-lg" id="category_title" name="title">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="category_image" class="form-label fw-semibold">Category Image:</label>
+                            <input type="file" class="form-control form-control-lg" id="category_image"
+                                name="category_image">
+                        </div>
+                        <div class="col-12 col-md-8 text-center mt-3">
+                            <input type="submit" value="Add Category" class="btn btn-info btn-lg shadow-sm">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Existing Categories -->
+                <div class="card shadow-sm p-3 bg-white rounded-4">
+                    <h3 class="text-center mb-3 fw-bold">Existing Categories</h3>
+                    <div class="row g-3 justify-content-start">
+                        {% for cat in category %}
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <div class="card shadow-sm h-100">
+                                {% if cat.category_image %}
+                                <img src="{{ cat.category_image.url }}" class="card-img-top object-fit-cover"
+                                    alt="{{ cat.title }}" style="height: 150px;">
+                                {% else %}
+                                <img src="{% static 'images/default-banner.jpg' %}"
+                                    class="card-img-top object-fit-cover" alt="Default" style="height: 150px;">
+                                {% endif %}
+                                <div class="card-body p-2 text-center">
+                                    <h6 class="card-title text-truncate">{{ cat.title }}</h6>
+                                </div>
+                                <div class="card-footer d-flex justify-content-center p-2">
+                                    <form action="{% url 'delete_category' cat.id %}" method="post" class="w-100">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm w-100">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Brand Section -->
+            <div id="brand-section" class="d-none">
+                <div class="card shadow-sm mb-4 p-4 bg-white rounded-4">
+                    <h2 class="text-center fw-bold mb-4">Add Brand</h2>
+                    <form method="post" enctype="multipart/form-data" class="row g-3 justify-content-center">
+                        {% csrf_token %}
+                        <div class="col-12 col-md-8">
+                            <label for="brand_id" class="form-label fw-semibold">ID:</label>
+                            <input type="text" class="form-control form-control-lg" id="brand_id" name="id">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="brand_name" class="form-label fw-semibold">Brand Name:</label>
+                            <input type="text" class="form-control form-control-lg" id="brand_name" name="brand_name">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="brand_logo" class="form-label fw-semibold">Brand Logo:</label>
+                            <input type="file" class="form-control form-control-lg" id="brand_logo" name="brand_logo">
+                        </div>
+                        <div class="col-12 col-md-8 text-center mt-3">
+                            <input type="submit" value="Add Brand" class="btn btn-warning btn-lg shadow-sm">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Existing Brands -->
+                <div class="card shadow-sm p-3 bg-white rounded-4">
+                    <h3 class="text-center mb-3 fw-bold">Existing Brands</h3>
+                    <div class="row g-3 justify-content-start">
+                        {% for b in brand %}
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <div class="card shadow-sm h-100">
+                                {% if b.brand_logo %}
+                                <img src="{{ b.brand_logo.url }}" class="card-img-top object-fit-cover"
+                                    alt="{{ b.brand_name }}" style="height: 150px;">
+                                {% else %}
+                                <img src="{% static 'images/default-banner.jpg' %}"
+                                    class="card-img-top object-fit-cover" alt="Default" style="height: 150px;">
+                                {% endif %}
+                                <div class="card-body p-2 text-center">
+                                    <h6 class="card-title text-truncate">{{ b.brand_name }}</h6>
+                                </div>
+                                <div class="card-footer d-flex justify-content-center p-2">
+                                    <form action="{% url 'delete_brand' b.id %}" method="post" class="w-100">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm w-100">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Section -->
+            <div id="product-section" class="d-none">
+                <div class="card shadow-sm mb-4 p-4 bg-white rounded-4">
+                    <h2 class="text-center fw-bold mb-4">Add Product</h2>
+                    <form method="post" enctype="multipart/form-data" class="row g-3 justify-content-center">
+                        {% csrf_token %}
+                        <div class="col-12 col-md-8">
+                            <label for="product_title" class="form-label fw-semibold">Title:</label>
+                            <input type="text" class="form-control form-control-lg" id="product_title" name="title">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="selling_price" class="form-label fw-semibold">Selling Price:</label>
+                            <input type="number" class="form-control form-control-lg" id="selling_price"
+                                name="selling_price">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="discount_price" class="form-label fw-semibold">Discount Price:</label>
+                            <input type="number" class="form-control form-control-lg" id="discount_price"
+                                name="discount_price">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="description" class="form-label fw-semibold">Description:</label>
+                            <textarea class="form-control form-control-lg" id="description"
+                                name="description"></textarea>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="composition" class="form-label fw-semibold">Composition:</label>
+                            <textarea class="form-control form-control-lg" id="composition"
+                                name="composition"></textarea>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="category" class="form-label fw-semibold">Category:</label>
+                            <select id="category" name="category" class="form-control form-control-lg">
+                                {% for i in category %}
+                                <option value="{{ i.id }}">{{ i.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="brand" class="form-label fw-semibold">Brand:</label>
+                            <select id="brand" name="brand" class="form-control form-control-lg">
+                                {% for i in brand %}
+                                <option value="{{ i.id }}">{{ i.brand_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="quantity" class="form-label fw-semibold">Quantity:</label>
+                            <input type="number" class="form-control form-control-lg" id="quantity" name="quantity">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <label for="product_image" class="form-label fw-semibold">Product Image:</label>
+                            <input type="file" class="form-control form-control-lg" id="product_image"
+                                name="product_image">
+                        </div>
+                        <div class="col-12 col-md-8 text-center mt-3">
+                            <input type="submit" value="Add Product" class="btn btn-primary btn-lg shadow-sm">
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Existing Products -->
+                <div class="card shadow-sm p-3 bg-white rounded-4">
+                    <h3 class="text-center mb-3 fw-bold">Existing Products</h3>
+                    <div class="row g-3 justify-content-start">
+                        {% for p in product %}
+                        <div class="col-6 col-md-3 col-lg-2">
+                            <div class="card shadow-sm h-100">
+                                {% if p.product_image %}
+                                <img src="{{ p.product_image.url }}" class="card-img-top object-fit-cover"
+                                    alt="{{ p.title }}" style="height: 150px;">
+                                {% else %}
+                                <img src="{% static 'images/default-banner.jpg' %}"
+                                    class="card-img-top object-fit-cover" alt="Default" style="height: 150px;">
+                                {% endif %}
+                                <div class="card-body p-2 text-center">
+                                    <h6 class="card-title text-truncate">{{ p.title }}</h6>
+                                </div>
+                                <div class="card-footer d-flex justify-content-center p-2">
+                                    <form action="{% url 'delete_product' p.id %}" method="post" class="w-100">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm w-100">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function showSection(sectionId) {
+        const sections = ['dashboard-overview', 'banner-section', 'category-section', 'brand-section', 'product-section'];
+        sections.forEach(id => document.getElementById(id).classList.add('d-none'));
+        document.getElementById(sectionId).classList.remove('d-none');
+    }
+</script>
 
 {% endblock main-content %}

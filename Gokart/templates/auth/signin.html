@@ -1,0 +1,42 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block title %}Registration{% endblock title %}
+
+{% block main-content %}
+<link rel="stylesheet" href="{% static 'app/css/login.css' %}">
+
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow-lg p-5 rounded-4 w-100" style="max-width: 450px; background: #fff;">
+        <h3 class="text-center mb-4 fw-bold">Registration</h3>
+
+        {% if messages %}
+        {% for msg in messages %}
+        <div class="alert alert-{{ msg.tags }} py-2" role="alert">{{ msg }}</div>
+        {% endfor %}
+        {% endif %}
+
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {% for i in form %}
+            <div class="form-floating mb-3">
+                {{ i }}
+                <label for="floatingInput">{{ i.label }}</label>
+            </div>
+            <small class="text-danger mb-2 d-block">{{ i.errors|striptags }}</small>
+            {% endfor %}
+
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-primary btn-lg fw-bold">Register</button>
+            </div>
+
+            <div class="text-center">
+                <small class="fw-bold text-primary">
+                    Existing User? 
+                    <a href="{% url 'login' %}" class="text-danger text-decoration-none fw-bold">Login</a>
+                </small>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock main-content %}

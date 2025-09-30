@@ -2,39 +2,51 @@
 {% load static %}
 {% block title %}Address Update{% endblock title %}
 
+
+
 {% block main-content %}
+<link rel="stylesheet" href="{% static 'app/css/profile.css' %}">
 
-    <div class="container">
-        <div class="row">
-            <h3 class="text-center fw-bold  ">Welcome <span class="text-success ">{{request.user.username|capfirst}}</span></h3>
-        </div>
-        <div class="col-sm-8 offset-sm-1 card shadow p-5  ">
-            <form action="" method="post">
-                {% csrf_token %}
-                {% for i in form %}
-                {{i.label_tag}}
-                {{i}}
-                <small class="text-danger ">{{i.errors|striptags}}</small>
-                {% endfor %}
-                <div class="col-12 mt-3 d-flex justify-content-center gap-4  ">
-                        <button type="submit" class="btn btn-success ">Update</button>
-                    <a href="{% url 'address' %}">
-                        <button type="button" class="btn btn-dark">Cancel</button>
-                    </a>
-                </div>
+    <div class="container my-5">
+    <h3 class="text-center fw-bold mb-4">
+        Welcome <span class="text-success">{{ request.user.username|capfirst }}</span>
+    </h3>
+    
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <div class="card shadow">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                    <div class="mb-3">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        <small class="text-danger">{{ field.errors|striptags }}</small>
+                    </div>
+                    {% endfor %}
 
-                {% if forms.non_field_errors %}
-                {% for error in form.non_field_errors %}
-                <p class="text-danger mt-2">{{error | striptags }}</p>
-                {% endfor %}
-                {% endif %}
+                    <div class="d-flex justify-content-center gap-4 mt-4">
+                        <button type="submit" class="btn btn-success px-4">Update</button>
+                        <a href="{% url 'address' %}" class="btn btn-dark px-4">Cancel</a>
+                    </div>
 
-                {% if messages %}
-                {% for msg in messages %}
-                <div class="alert alert-{{msg.tags}}" role="alert">{{msg}}</div>
-                {% endfor %}
-                {% endif %}
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger mt-3">{{ error|striptags }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if messages %}
+                        {% for msg in messages %}
+                        <div class="alert alert-{{ msg.tags }} mt-3">{{ msg }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </div>
         </div>
     </div>
+</div>
+
 
 {% endblock main-content %}

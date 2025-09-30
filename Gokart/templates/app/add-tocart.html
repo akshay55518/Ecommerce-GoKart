@@ -1,13 +1,15 @@
 {% extends 'app/base.html' %}
 {% load static %}
-{% block title %}Cart{% endblock title %}
+{% block title %}add to Cart{% endblock title %}
+
 
 {% block main-content %}
+<link rel="stylesheet" href="{% static 'app/css/cart.css' %}">
 
 <div class="container">
+    <h1 class="text-center">Your Cart</h1>
     <div class="row p-3 ">
         {% if cart %}
-        <h1 class="text-center mb-3 ">Your Shopping Cart</h1>
         <div class="col-sm-8 ">
             <div class="card p-3">
                 <div class="card-body">
@@ -23,19 +25,21 @@
                                 <div class="my-3 d-flex justify-content-between ">
                                     <div>
                                         <label for="quantity" class="form-label">Quantity: </label>
-                                        <a class="minus-cart btn" pid="{{item.product.id}}"><i class="fas fa-minus-square fa-lg"></i></a>
+                                        <a class="minus-cart btn" pid="{{item.product.id}}">-</a>
                                         <span id="quantity">{{item.quantity}}</span>
-                                        <a class="plus-cart btn" pid="{{item.product.id}}"><i class="fas fa-plus-square fa-lg"></i></a>
+                                        <a class="plus-cart btn" pid="{{item.product.id}}">+</a>
                                     </div>
                                     <div>
                                         <p class="mb-0"><strong>Rs{{item.product.discount_price}}</strong></p>
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between ">
-                                    <a class="remove-cart btn btn-sm btn-danger mr-3" pid="{{item.product.id}}" ><span class="material-symbols-outlined">
-                                        delete
-                                        </span>Remove item</a>
-                                </div>
+                                <div class="d-flex justify-content-end ">
+                                    <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger w-25 ">
+                                        <span class="material-symbols-outlined" style="font-size: 18px;">
+                                            delete
+                                         </span>Remove
+                                    </a>
+                               </div> 
                             </div>
                         </div>
                     </div>
@@ -65,12 +69,14 @@
                     </strong></span>
                 </li>
             </ul>
-            <div class="d-flex justify-content-center "><a href="{% url 'checkout' %}" class="btn btn-primary w-50 ">Place order</a></div>
+            <div class="d-flex justify-content-center ">
+                <a href="{% url 'checkout' %}" class="btn btn-primary w-50 ">Place order</a>
+            </div>
         </div>
     </div>
 </div>
 {% else%}
-<h1 class="text-center mb-5 ">Empty Cart</h1>
+<p class="text-center mb-5">No items in cart!</p>
     </div>
     {% endif %}
 </div>

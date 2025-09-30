@@ -2,10 +2,33 @@
 {% load static %}
 {% block title %}Contact Us{% endblock title %}
 
-
 {% block main-content %}
 
-<h1>Contact Us</h1>
+<div class="container my-5">
+    <div class="card shadow p-4 mx-auto" style="max-width: 600px; border-radius: 15px;">
+        <h1 class="text-center mb-4">Contact Us</h1>
 
+        <form>
+            <div class="mb-3">
+                <label for="developer" class="form-label fw-bold">Developer</label>
+                <input type="text" class="form-control" id="developer" value="Akshay E" disabled>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label fw-bold">Email</label>
+                <input type="email" class="form-control" id="email" value="akshay55518@gmail.com" disabled>
+            </div>
+
+            <div class="mb-3">
+                <label for="message" class="form-label fw-bold">Message</label>
+                <textarea class="form-control" id="message" rows="5" placeholder="Write your message here..."></textarea>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-success px-4">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 {% endblock main-content %}

@@ -1,0 +1,144 @@
+.card {
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 30px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.btn {
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.sidebar .btn {
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.sidebar .btn-primary {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.sidebar .btn-primary:hover {
+    background-color: #145c32;
+    border-color: #145c32;
+}
+
+h3 span.text-success {
+    color: #198754;
+}
+
+input, select, textarea {
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #198754;
+    box-shadow: 0 0 5px rgba(25, 135, 84, 0.5);
+}
+
+.alert {
+    border-radius: 12px;
+}
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.btn {
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+h3 span.text-success {
+    color: #198754;
+}
+
+.card-title h4 {
+    font-weight: bold;
+}
+
+.alert {
+    border-radius: 12px;
+}
+
+.sidebar .btn {
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.sidebar .btn-primary {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+.sidebar .btn-primary:hover {
+    background-color: #145c32;
+    border-color: #145c32;
+}
+
+a.text-decoration-none {
+    text-decoration: none;
+    color: inherit;
+}
+
+a.text-decoration-none:hover {
+    color: #dc3545; /* Delete icon hover color */
+}
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 30px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+h3 span.text-success {
+    color: #198754;
+}
+
+.btn {
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.alert {
+    border-radius: 12px;
+    margin-top: 15px;
+}

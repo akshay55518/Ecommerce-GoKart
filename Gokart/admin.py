@@ -1,5 +1,5 @@
 from django.contrib import admin
-from . models import Category,Product,Banner,Brand,Customer,Cart,Payment,OrderPlaced
+from . models import Category,Product,Banner,Brand,Customer,Cart,OrderPlaced
 
 # Register your models here.
 
@@ -30,9 +30,9 @@ class  CustomerAddressModelAdmin(admin.ModelAdmin):
 class CartModelAdmin(admin.ModelAdmin):
     list_display=['user','product','quantity','date_added']
     
-@admin.register(Payment)
-class PaymentModelAdmin(admin.ModelAdmin):
-    list_display=['id','user','amount','razorpay_order_id','razorpay_payment_status','razorpay_payment_id','paid']
+# @admin.register(Payment)
+# class PaymentModelAdmin(admin.ModelAdmin):
+#     list_display=['id','user','amount','razorpay_order_id','razorpay_payment_status','razorpay_payment_id','paid']
     
 @admin.register(OrderPlaced)
 class OrderPlacedModelAdmin(admin.ModelAdmin):

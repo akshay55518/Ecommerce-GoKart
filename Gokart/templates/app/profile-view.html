@@ -3,48 +3,64 @@
 {% block title %}Profile{% endblock title %}
 
 
+
 {% block main-content %}
+<link rel="stylesheet" href="{% static 'app/css/profile.css' %}">
+
 <!-- <h1>Profile view</h1> -->
 
-<div class="container">
-    <div class="row">
-        <h3 class="text-center fw-bold  ">Welcome <span class="text-success ">{{request.user.username|capfirst}}</span></h3>
-        <hr>
-        <div class="col-sm-2 border-end ">
-            <ul class="list-unstyled ">
-                <li class="d-grid "><a href="{% url 'profile' %}" class="btn btn-primary ">Profile</a></li>
-                <li class="d-grid "><a href="{% url 'address' %}" class="btn">Address</a></li>
+<div class="container my-5">
+    <h3 class="text-center fw-bold mb-4">
+        Welcome <span class="text-success">{{ request.user.username|capfirst }}</span>
+    </h3>
+    <hr>
+    <div class="row mt-4">
+        <!-- Sidebar -->
+        <div class="col-sm-2 border-end sidebar">
+            <ul class="list-unstyled">
+                <li class="d-grid mb-2">
+                    <a href="{% url 'profile' %}" class="btn btn-primary">Profile</a>
+                </li>
+                <li class="d-grid">
+                    <a href="{% url 'address' %}" class="btn btn-outline-secondary">Address</a>
+                </li>
             </ul>
         </div>
 
-        <div class="col-sm-8 offset-sm-1 ">
-            <div class="card p-5">
+        <!-- Form Section -->
+        <div class="col-sm-8 offset-sm-1">
+            <div class="card">
                 <form action="" method="post">
                     {% csrf_token %}
-                    {% for i in form %}
-                    {{i.label_tag}}
-                    {{i}}
-                    <small class="text-danger ">{{i.errors|striptags}}</small>
+                    {% for field in form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <small class="text-danger">{{ field.errors|striptags }}</small>
+                            {% endif %}
+                        </div>
                     {% endfor %}
-                    <div class="col-12 mt-3 d-flex justify-content-center ">
-                        <button type="submit" class="btn btn-primary ">Submit</button>
+
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="submit" class="btn btn-success px-4">Submit</button>
                     </div>
-    
-                    {% if forms.non_field_errors %}
-                    {% for error in form.non_field_errors %}
-                    <p class="text-danger mt-2">{{error | striptags }}</p>
-                    {% endfor %}
+
+                    {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                            <p class="text-danger mt-2">{{ error|striptags }}</p>
+                        {% endfor %}
                     {% endif %}
-    
+
                     {% if messages %}
-                    {% for msg in messages %}
-                    <div class="alert alert-{{msg.tags}}" role="alert">{{msg}}</div>
-                    {% endfor %}
+                        {% for msg in messages %}
+                            <div class="alert alert-{{ msg.tags }} mt-3" role="alert">{{ msg }}</div>
+                        {% endfor %}
                     {% endif %}
                 </form>
             </div>
-            
         </div>
     </div>
 </div>
+
 {% endblock main-content %}

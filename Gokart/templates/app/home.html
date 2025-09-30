@@ -2,87 +2,108 @@
 {% load static %}
 {% block title %}Home{% endblock title %}
 
-
 {% block banner-slider %}
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+<div id="carouselExampleIndicators" class="carousel slide animate__animated animate__fadeInDown mt-4" data-bs-ride="carousel">
+    
+    <!-- Indicators (dots) -->
+    <div class="carousel-indicators">
+        {% for banner in banner %}
+            <button type="button" data-bs-target="#carouselExampleIndicators" 
+                    data-bs-slide-to="{{ forloop.counter0 }}" 
+                    {% if forloop.first %}class="active"{% endif %} 
+                    aria-label="Slide {{ forloop.counter }}">
+            </button>
+        {% endfor %}
+    </div>
+
+    <!-- Carousel images -->
     <div class="carousel-inner">
         {% for banner in banner %}
-        <div class="carousel-item active">
-            <img src="{{banner.banner_image.url}}" class="d-block mx-auto" width="1000" height="250" alt="{{banner.title}}">
-        </div>
-        {% endfor%}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                {% if banner.banner_image %}
+                    <img src="{{ banner.banner_image.url }}" class="d-block mx-auto rounded shadow-lg"
+                         style="width:80%; height:250px; object-fit:cover;" alt="{{ banner.title }}">
+                {% else %}
+                    <img src="{% static 'images/default-banner.jpg' %}" class="d-block mx-auto rounded shadow-lg"
+                         style="width:80%; height:250px; object-fit:cover;" alt="Default Banner">
+                {% endif %}
+            </div>
+        {% endfor %}
     </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+
 </div>
 <br>
 {% endblock banner-slider %}
-
-{% block information %}
-<!-- <div class="container-fluid  ">
-    <div class="row bg-success text-center p-5 text-white border-bottom shadow">
-        <h1>Products</h1>
-        <small class="fs-5 ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit id optio soluta 
-            facere numquam consequuntur veniam voluptates saepe quidem quae mollitia labore illo nulla ab odio 
-            quos, officiis accusantium molestias?</small>
-    </div>
-</div> -->
-{% endblock information %}
 
 
 {% block main-content %}
 <link rel="stylesheet" href="{% static 'app/css/home.css'%}">
 
-<div class="container container1 card p-3  ">
-    
-    <h3>View Items</h3>
-    <div class="row gap-3 d-flex justify-content-center ">
+<!-- Products Section -->
+<div class="container my-4">
+    <h3 class="mb-4 text-center animate__animated animate__fadeInRight">View Items</h3>
+    <div class="row justify-content-center gap-3">
         {% for product in product %}
-    <div class="card shadow mt-2 card1" style="width: 18rem;">
-        <a href="{% url 'product-detail' product.id %}" class="text-decoration-none text-bg-dark ">
-            <img src="{{product.product_image.url}}" class="card-img-top" alt="{{product.title}}" width="auto" height="250px">
-            <div class="card-body">
-              <h5 class="card-title">{{product.title}}</h5>
-              <div>
-                <small class="text-decoration-line-through ">Price:{{product.selling_price}}</small>
-                <p class="card-text">Discount Price:{{product.discount_price}}</p>
-              </div>
-        
-              <div class="d-flex justify-content-around ">
-                <a href="" class="btn">
-                    <span class="material-symbols-outlined">
-                    favorite
-                    </span></a>
-                    <a href="{% url 'add-to-cart' %}" class="btn btn-primary">
-                        <span class="material-symbols-outlined">
-                        shopping_cart
-                        </span>Add to cart</a>
-              </div>
-            </div>
-        </a>
-      </div>
-      {% endfor %}
-    </div>   
-</div>
-<br>
-
-<div class="container container1 card gap-3 p-3  ">
-<h3>Categories</h3>
-<div class="row d-flex justify-content-center gap-3 ">
-    {% for category in category %}
-    <!-- <p>{{category.id}}</p> -->
-    <div class="col-md-4 col-sm-4 mt-4  fadeInUp w-25 shadow" >
-        <div class="card object-fit-fill">
-            <a href="{% url 'category' category.id %}" class="text-decoration-none">
-                <div class="text-center">
-                    <img class="card-img " src="{{category.category_image.url}}" alt="{{category.title}}" width="50" height="100">
-                    <h4 class="card-footer ">{{category.title}}</h4>
+        <div class="col-md-3 col-sm-6 mb-4 animate__animated animate__fadeInUp">
+            <div class="card product-card shadow rounded overflow-hidden">
+                <img src="{{product.product_image.url}}" class="card-img-top" style="height:250px; object-fit:cover;" alt="{{product.title}}">
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{product.title}}</h5>
+                    <p class="mb-1"><small class="text-decoration-line-through text-muted">Price: {{product.selling_price}}</small></p>
+                    <p class="card-text fw-bold text-danger">Discount: {{product.discount_price}}</p>
+                    <a href="{% url 'product-detail' product.id %}" class="btn btn-fun mt-2 w-100">View Details</a>
                 </div>
-            </a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No products available.</p>
+        {% endfor %}
+    </div>
+
+    {% include "app/includes/pagination.html" with page_obj=product %}
+</div>
+
+
+<!-- Categories Section -->
+<div class="container my-5">
+    <h3 class="mb-4 animate__animated animate__fadeInLeft d-flex align-items-center justify-content-center">Categories</h3>
+    <div class="row justify-content-center gap-3">
+        {% for category in category %}
+        <div class="col-md-3 col-sm-6 mb-4 animate__animated animate__fadeInUp">
+            <div class="card category-card shadow rounded overflow-hidden text-center p-2">
+                <a href="{% url 'category' category.id %}" class="text-decoration-none text-dark">
+                    <img class="card-img-top rounded mb-2" src="{{category.category_image.url}}" style="height:150px; object-fit:cover;" alt="{{category.title}}">
+                    <div class="card-footer bg-gradient rounded text-black fw-bold">{{category.title}}</div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+ <!-- Footer -->
+    {% if not request.user.is_superuser %}
+    <footer class="mt-5 bg-dark">
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="text-white">
+            <p>&copy; Developed by: Akshay</p>
+        </div>
+        <div >
+            <a href="{% url 'about-us' %}" class="link-light text-decoration-none me-3">About Us</a>
+            <a href="{% url 'contact-us' %}" class="link-light text-decoration-none">Contact Us</a>
         </div>
     </div>
-    {% endfor %}
-</div>
-    
-</div>
-
+</footer>
+    {% endif %}
 
 {% endblock main-content %}

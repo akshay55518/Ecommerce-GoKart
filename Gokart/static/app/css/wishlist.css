@@ -1,0 +1,39 @@
+.wishlist-card {
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 15px;
+}
+
+.wishlist-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.wishlist-card img {
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.wishlist-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 15px;
+}
+
+.wishlist-price {
+    font-weight: bold;
+    font-size: 18px;
+    color: #28a745;
+}
+
+.wishlist-delete-btn {
+    border-radius: 50px;
+    transition: transform 0.2s ease;
+}
+
+.wishlist-delete-btn:hover {
+    transform: scale(1.05);
+}

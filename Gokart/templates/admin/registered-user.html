@@ -1,0 +1,52 @@
+{% extends "app/base.html" %}
+{% load static %}
+{% block title %}Registered Users{% endblock title %}
+
+{% block main-content %}
+<link rel="stylesheet" href="{% static 'app/css/admin-style.css' %}">
+
+<div class="container py-5">
+    <h1 class="text-center mb-4 display-5 fw-bold text-dark">Registered Users</h1>
+
+    <div class="table-responsive shadow rounded-4 overflow-hidden">
+        <table class="table table-hover align-middle mb-0 bg-white">
+            <thead class="table-dark">
+                <tr class="text-center">
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Last Login</th>
+                    <th scope="col">Joined Date</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr class="text-center">
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>
+                        <a href="{% url 'user-detail' user.id %}" class="text-decoration-none fw-medium text-primary">
+                            {{ user.username }}
+                        </a>
+                    </td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.last_login|date:"d M Y, H:i" }}</td>
+                    <td>{{ user.date_joined|date:"d M Y" }}</td>
+                    <td>
+                        <a href="{% url 'delete-user' user.id %}" class="btn btn-danger btn-sm shadow-sm">
+                            <span class="material-symbols-outlined">delete</span>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No registered users found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock main-content %}

@@ -1,0 +1,36 @@
+.order-card {
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+.order-card img {
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.order-status-btn {
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.order-action-btn {
+    border-radius: 50px;
+    margin-top: 10px;
+    transition: transform 0.2s ease;
+}
+
+.order-action-btn:hover {
+    transform: scale(1.05);
+}
+
+.table td {
+    padding: 4px 8px;
+    vertical-align: top;
+}

@@ -1,6 +1,8 @@
 {% extends 'app/base.html' %}
 {% load static %}
-{% block title %}Cart{% endblock title %}
+{% block title %}Checkout{% endblock title %}
+<link rel="stylesheet" href="{% static 'app/css/checkout.css' %}">
+
 
 {% block main-content %}
 
@@ -16,57 +18,58 @@
         <div class="col-sm-6 ">
             <h4 class="fw-bold ">Order Summary</h4>
             <hr>
-            {% for item in cart_item %}
-            <div class="card mb-2 ">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between ">
-                    <h5>Product: {{item.product.title}}</h5>
-                    <div class="d-flex justify-content-between ">
-                    <a class="remove-cart btn btn-sm btn-danger mr-3" pid="{{item.product.id}}" >
-                        <span class="material-symbols-outlined">
-                        delete
-                        </span>
-                    </a>
-                    </div>
-                    </div>
-                    <p>Quantity: {{item.quantity}}</p>
-                    <p>Price: <span class="fw-bold ">{{item.product.discount_price}}</span></p>
-                </div>
-                
-            </div>
+            {% for msg in messages %}
+                <div class="alert alert-{{msg.tags}}" role="alert">{{msg}}</div>
             {% endfor %}
-            <p>Total Cost: <span class="fw-bold ">{{totalamount}}</span></p>
+            {% for item in cart_item %}
+            <div class="card gap-2 p-3 hover-shadow">
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex gap-3 align-items-center">
+            <img src="{{item.product.product_image.url}}" alt="{{item.product.title}}" width="80" height="80" class="rounded">
+            <div style="max-width: 200px;">
+                <h6 class="fw-bold text-truncate">{{item.product.title}}</h6>
+                <p class="text-truncate">{{item.product.description}}</p>
+            </div>
+        </div>
+        <div class="text-end">
+            <p>Qty: <span class="fw-bold">{{item.quantity}}</span></p>
+            <p>Rs <span class="fw-bold">{{item.product.discount_price}}</span></p>
+            <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm mt-2">
+                <span class="material-symbols-outlined">delete</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+            {% endfor %}
+            <p class="mt-3 ">Total Cost: <span class="fw-bold ">{{totalamount}}</span></p>
         </div>
         <div class="col-sm-4 offset-sm-1 ">
             <h4 class="fw-bold ">Select Shipping Address:</h4>
             <hr>
-            <form method="post" id="myform" class="gap-3 ">
+            <form method="post" id="myform" action="{% url 'orderplaced' %}" class="gap-3 ">
                 {% csrf_token %}
-                {% for ad in add %}
+                {% for ad in customer %}
                 
-                <div class="card gap-3">
-                    <div class="card-header-tabs">
-                        <div class="form-check  mt-2 mb-5">
-                            <label class="form-check-label fw-bold  " for="custadd{{forloop.counter}}">
-                                Address:{{forloop.counter}} </label>
-                            <input type="radio" class="form-check-input" name="custid" id="custadd{{forloop.counter}}" value="{{ad.id}}">
-                        </div>
-                    </div>
-                    <div class="card-body shadow ">
-                        <h5 class="text-decoration-underline ">{{ad.name}}</h5>
-                        <p>Mobile: {{ad.mobile}}</p>
-                        <p>Address: {{ad.address}}, <br> {{ad.city}},<br> {{ad.state}} <br>{{ad.zipcode}}</p>
-                    </div>
-                </div>
+                <div class="card p-3 mb-3 shadow-sm address-card">
+    <div class="form-check">
+        <input type="radio" class="form-check-input" name="custid" id="custadd{{forloop.counter}}" value="{{ad.id}}">
+        <label class="form-check-label fw-bold" for="custadd{{forloop.counter}}">Address {{forloop.counter}}</label>
+    </div>
+    <div class="mt-2">
+        <h6 class="text-capitalize">{{ad.name}}</h6>
+        <p>Mobile: {{ad.mobile}}</p>
+        <p>{{ad.address}}, {{ad.city}}, {{ad.state}}, {{ad.zipcode}}</p>
+    </div>
+</div>
                 {% endfor %}
                 <hr>
                 <div class="form-check mb-3 ">
                     <p class="fw-bold text-center ">Total Amount:</p>
                     <input type="number" class="form-control " name="totalamount" value="{{totalamount}}" disabled>
                 </div>
-                <div class="d-flex justify-content-center  ">
-                    <!-- <button type="submit" class="btn btn-primary mt-3 px-5 ">Continue</button> -->
-                    <button id="rzp-button1" type="submit" class="btn btn-primary mt-1 px-4 ">Payment</button>
+                <div class="d-flex justify-content-center gap-3  ">
+                    <button type="submit" class="btn btn-primary mt-1 px-4">Payment <span class="">(Normal)</span></button>
                 </div>
             </form>
         </div>
@@ -74,38 +77,3 @@
 </div>
 
 {% endblock main-content %}
-
-{% block payment-gateway %}
-
-<script>
-    var options = {
-    "key": "rzp_test_67qhJUdlZCqsHS",
-    "amount": "{{razoramount}}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-    "currency": "INR",
-    "name": "GoKart",
-    "description": "Purchase Product",
-    "order_id": "{{order_id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-    "handler": function (response){
-        console.log('success')
-        var  form=document.getElementById('myform')
-        // alert(response.razorpay_payment_id);
-        // alert(response.razorpay_order_id);
-        // alert(response.razorpay_signature)
-        window.location.href='http://localhost:8000/paymentdone?order_id=$(response.razorpay_order_id)&payment_id=$(response.razorpay_payment_id)&cust_id=$(form.elements["custid"].value)'
-    },
-    "theme": {
-        "color": "#3399cc"
-    }
-};
-var rzp1 = new Razorpay(options);
-rzp1.on('payment.failed',function(response){
-    alert(response.error.description);
-});
-document.getElementById('rzp-button1').onclick=function(e){
-    console.log('button click');
-    rzp1.open();
-    e.preventDefault();
-}
-</script>
-
-{% endblock payment-gateway %}

@@ -4,47 +4,69 @@
 
 
 {% block main-content %}
+<link rel="stylesheet" href="{% static 'app/css/profile.css' %}">
 
-<div class="container">
-    <div class="row">
-        <h3 class="text-center fw-bold  ">Welcome <span class="text-success ">{{request.user.username|capfirst}}</span></h3>
-        <hr>
-        <div class="col-sm-2 border-end ">
-            <ul class="list-unstyled ">
-                <li class="d-grid "><a href="{% url 'profile' %}" class="btn">Profile</a></li>
-                <li class="d-grid "><a href="{% url 'address' %}" class="btn btn-primary ">Address</a></li>
+
+<div class="container my-5">
+    <h3 class="text-center fw-bold mb-4">
+        Welcome <span class="text-success">{{ request.user.username|capfirst }}</span>
+    </h3>
+    <hr>
+    <div class="row mt-4">
+        <!-- Sidebar -->
+        <div class="col-sm-2 border-end sidebar">
+            <ul class="list-unstyled">
+                <li class="d-grid mb-2">
+                    <a href="{% url 'profile' %}" class="btn btn-outline-secondary">Profile</a>
+                </li>
+                <li class="d-grid">
+                    <a href="{% url 'address' %}" class="btn btn-primary">Address</a>
+                </li>
             </ul>
         </div>
 
-        <div class="col-sm-8 offset-sm-1 ">
+        <!-- Addresses Section -->
+        <div class="col-sm-8 offset-sm-1">
             <div class="row">
-                {% for ad in add %}
-                <div class="col-sm-6 ">
-                    <div class="card m-2 shadow h-100 ">
-                        <div class="card-body ">
-                            <div class="card-title d-flex justify-content-between  ">
-                                <h4>Address:{{forloop.counter}}</h4>
-                                <button onclick="select()" class="material-symbols-outlined btn btn-default">
-                                    radio_button_unchecked
-                                </button>
+                {% if add %}
+                    {% for ad in add %}
+                    <div class="col-sm-6">
+                        <div class="card m-2 shadow h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h4>Address {{ forloop.counter }}</h4>
+                                    <a href="{% url 'delete-address' pk=ad.id %}" class="btn btn-outline-danger btn-sm">
+                                        <span class="material-symbols-outlined">
+                                            delete
+                                        </span>
+                                    </a>
+                                </div>
+                                <hr>
+                                <p><strong>Name:</strong> {{ ad.name }}</p>
+                                <p><strong>Address:</strong> {{ ad.address }}</p>
+                                <p><strong>Mobile:</strong> {{ ad.mobile }}</p>
+                                <p><strong>City:</strong> {{ ad.city }}</p>
+                                <p><strong>State:</strong> {{ ad.state }}</p>
+                                <p><strong>Pincode:</strong> {{ ad.zipcode }}</p>
+                                <div class="text-center mt-3">
+                                    <a href="{% url 'address-update' pk=ad.id %}" class="btn btn-success w-50">
+                                        Update
+                                    </a>
+                                </div>
                             </div>
-                            <hr>
-                            <p>Name:{{ad.name}}</p>
-                            <p>Address:{{ad.address}}</p>
-                            <p>Mobile:{{ad.mobile}}</p>
-                            <p>City:{{ad.city}}</p>
-                            <p>State:{{ad.state}}</p>
-                            <p>Pincode:{{ad.zipcode}}</p>
-                            <br>
-                            <p class="text-center"><a href="{% url 'address-update' pk=ad.id %}" type="button" class="btn btn-success ">Update</a></p>
                         </div>
                     </div>
-                </div>
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-warning" role="alert">
+                        No Addresses Found! Add a new one.
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
+
 
 
 {% endblock main-content %}

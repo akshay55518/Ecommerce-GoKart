@@ -1,68 +1,155 @@
 {% extends "app/base.html" %}
 {% load static %}
-{% block title %}ProductDetail{% endblock title %}
-
+{% block title %}Product Detail{% endblock title %}
 
 {% block main-content %}
 
-<div class="container my-5 p-3">
+<div class="container my-5">
 
-    <div class="card p-5">
+    <!-- Product Card -->
+    <div class="card p-4 shadow-lg rounded animate__animated animate__fadeInUp">
         <div class="row">
-            <aside class="col-md-6">
-                <div class="gallery-wrap">
-                    <div class="img-big-wrap">
-                        <a href="#"><img src="{{product.product_image.url}}" class="object-fit-contain " width="400" height="400"></a>
-                    </div>
+            <!-- Product Image -->
+            <aside class="col-md-6 mb-3">
+                <div class="gallery-wrap text-center">
+                    <img src="{{product.product_image.url}}" class="img-fluid rounded shadow-sm"
+                        style="max-height:400px; object-fit:contain;" alt="{{product.title}}">
                 </div>
             </aside>
-            <main class="col-md-6 border-left">
+
+            <!-- Product Info -->
+            <main class="col-md-6 border-start ps-4">
                 <div class="content-body">
-                    <div class="d-flex justify-content-between ">
-                        <h2 class="title">{{product.title}}</h2>
-                        <a href="" class="text-decoration-none ">
-                            <span class="material-symbols-outlined">
-                                favorite
-                            </span></a>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h2 class="title animate__animated animate__bounce">{{product.title}}</h2>
+
+                        <!-- Wishlist Button -->
+                        <a href="{% url 'add_to_wishlist' product.id %}" class="text-decoration-none">
+                            <button class="btn btn-fun rounded-circle p-2">
+                                {% if wishlist %}
+                                <span class="material-symbols-outlined text-danger">favorite</span>
+                                {% else %}
+                                <span class="material-symbols-outlined">favorite</span>
+                                {% endif %}
+                            </button>
+                        </a>
                     </div>
 
-                    <div class="mb-3 d-flex justify-content-between" >
-                        <small class="h6 text-decoration-line-through text-danger ">
-                            <span class="material-symbols-outlined">
-                                currency_rupee
-                            </span>{{product.selling_price}}</small>
-                        <p class="h4"><span class="material-symbols-outlined">currency_rupee</span>
-                            {{product.discount_price}}</p>
+                    <!-- Pricing -->
+                    <div class="mb-3">
+                        <small class="text-decoration-line-through text-danger me-2">
+                            <span class="material-symbols-outlined">currency_rupee</span>
+                            {{product.selling_price}}
+                        </small>
+                        <span class="badge bg-warning text-dark">{{percent|floatformat:2}}% OFF</span>
+                        <h3 class="mt-2 text-danger">
+                            <span class="material-symbols-outlined">currency_rupee</span> {{product.discount_price}}
+                        </h3>
                     </div>
 
-                    <!-- Product details -->
-                    <h5>Product Description:</h5>
-                    <ul>
-                        <li>{{product.description}}</li>
-                    </ul>
-                    <h5>Product Detail:</h5>
-                    <ul>
-                        <li>{{product.composition}}</li>
-                    </ul>
-                    <br>
-                    <!-- button -->
-                    <div class="d-flex justify-content-between ">
-                        <form action="/add-to-cart" method="">
-                        <input type="hidden" name="prod_id" value="{{product.id}}">
-                        <button class="btn btn-primary">
-                            <span class="material-symbols-outlined">shopping_cart</span>
-                            <span class="text">Add to cart</span>
-                        </button>
+                    <!-- Product Description -->
+                    <div class="mb-3">
+                        <h5>Description:</h5>
+                        <p>{{product.description}}</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h5>Details:</h5>
+                        <p>{{product.composition}}</p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-3">
+                        <form action="{% url 'add-to-cart' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="prod_id" value="{{ product.id }}">
+                            <button class="btn btn-fun" type="submit">
+                                <i class="fa fa-shopping-cart me-2"></i>Add to Cart
+                            </button>
                         </form>
-                        <a href="{% url 'show-cart' %}" class="btn btn-dark">
-                            <span class="material-symbols-outlined">shopping_bag</span>
-                            <span class="text">Buy Now</span>
+                        <a href="" class="btn btn-dark">
+                            <i class="fa fa-shopping-bag me-2"></i>Buy Now
                         </a>
                     </div>
                 </div>
             </main>
         </div>
     </div>
+
+    <!-- Review Section -->
+    <div class="card mt-5 shadow-lg rounded animate__animated animate__fadeInUp">
+        <div class="card-header d-flex justify-content-between align-items-center bg-gradient text-white">
+            <h5 class="mb-0">
+                <span class="material-symbols-outlined">reviews</span> Reviews
+            </h5>
+            {% for msg in messages %}
+            <p class="fw-bold text-danger mb-0">{{msg}}</p>
+            {% endfor %}
+        </div>
+
+        <div class="card-body d-flex flex-column flex-md-row gap-4">
+            <!-- Add Review Form -->
+            <div class="flex-fill">
+                <form action="{% url 'add_review' product.id %}" method="post">
+                    {% csrf_token %}
+                    <label for="rating" class="form-label fw-bold">Rating:</label>
+                    <select name="rating" id="rating" class="form-select mb-3">
+                        <option selected disabled>Select rating</option>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="5">5 Stars</option>
+                    </select>
+
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="Leave a comment" name="comment" id="comment"
+                            rows="4"></textarea>
+                        <label for="comment">Comments</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-fun w-100">Submit Review</button>
+                </form>
+            </div>
+
+            <!-- Display Reviews -->
+            <div class="flex-fill">
+                <h5 class="fw-bold text-decoration-underline">Average Rating:</h5>
+                <p class="fs-5">
+                    <span class="material-symbols-outlined">star</span> {{ average_rating|default:"No reviews yet" }}
+                </p>
+
+                {% if reviews %}
+                {% for review in reviews|slice:":3" %}
+                <div class="shadow p-3 mb-3 rounded bg-light d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-1 text-capitalize">
+                            <span class="material-symbols-outlined">person</span> {{ review.user.username }}
+                        </p>
+                        <p class="mb-1">
+                            <span class="material-symbols-outlined text-warning">star</span> {{ review.rating }}
+                        </p>
+                        <p class="mb-0">
+                            <span class="material-symbols-outlined">comment</span> {{ review.comment }}
+                        </p>
+                    </div>
+                    <div>
+                        <form action="{% url 'delete_review' review.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-danger" type="submit">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="text-center">No reviews available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
 </div>
 
 {% endblock main-content %}

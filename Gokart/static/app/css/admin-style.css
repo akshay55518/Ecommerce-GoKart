@@ -1,0 +1,53 @@
+/* Hover effect on table rows */
+.table-hover tbody tr:hover {
+    background-color: #f1f5f9;
+    transition: 0.3s;
+}
+
+/* Button hover effect */
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+    transition: 0.2s;
+}
+
+/* Table header bold and centered */
+.table-dark th {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .display-5 {
+        font-size: 1.8rem;
+    }
+}
+
+.card-body {
+    transition: transform 0.3s;
+}
+.card:hover .card-body {
+    transform: scale(1.02);
+}
+
+.table th {
+    width: 120px;
+}
+
+.badge {
+    font-size: 0.95rem;
+    padding: 0.5em 0.75em;
+}
+
+@media (max-width: 768px) {
+    .card-body {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    .flex-shrink-0 {
+        width: 100%;
+        text-align: center;
+    }
+}
